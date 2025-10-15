@@ -1,0 +1,40 @@
+name: 🤖 Auto Issue Bot
+on:
+  issues:
+    types: [opened]
+jobs:
+  auto-response:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add a thank-you comment
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            👋 Hey @${{ github.actor }}!  
+            Thanks for opening this issue 🎯  
+            The maintainers will review it soon.  
+            Meanwhile, make sure you’ve checked out our:
+            - 📜 **[README.md](https://github.com/${{ github.repository }}/blob/main/README.md)**
+            - 🤝 **[CONTRIBUTING.md](https://github.com/${{ github.repository }}/blob/main/CONTRIBUTING.md)**
+            💡 **Hacktoberfest Tip:**  
+            Don’t forget to link your PR to this issue (e.g. `Fixes #${{ github.event.issue.number }}`) to get credit for your contribution.  
+            💬 Need help or want to chat with contributors?  
+            Happy coding and good luck 🍀✨
+
+      - name: Add labels to the issue
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            documentation
+            good first issue
+            hacktoberfest
+
+      - name: Add emoji reaction
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: "👍"
