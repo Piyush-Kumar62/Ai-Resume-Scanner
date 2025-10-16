@@ -1,11 +1,18 @@
 name: 🤖 Auto Issue Bot
+
 on:
   issues:
     types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   auto-response:
     runs-on: ubuntu-latest
     steps:
+      # Step 1️⃣: Add a thank-you comment
       - name: Add a thank-you comment
         uses: peter-evans/create-or-update-comment@v3
         with:
@@ -23,6 +30,7 @@ jobs:
             💬 Need help or want to chat with contributors?  
             Happy coding and good luck 🍀✨
 
+      # Step 2️⃣: Add labels automatically
       - name: Add labels to the issue
         uses: actions-ecosystem/action-add-labels@v1
         with:
@@ -32,9 +40,11 @@ jobs:
             good first issue
             hacktoberfest
 
+      # Step 3️⃣: Add emoji reaction 👍
       - name: Add emoji reaction
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/add-reaction@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
           issue-number: ${{ github.event.issue.number }}
-          body: "👍"
+          reaction-type: "+1"
